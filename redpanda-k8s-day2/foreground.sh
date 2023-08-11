@@ -47,7 +47,6 @@ helm install redpanda redpanda/redpanda -n redpanda  \
 --set resources.memory.redpanda.memory=1Gi \
 --set external.domain='' \
 --set external.addresses={'localhost'} \
---set config.cluster.auto_create_topics_enabled=true
-
-
+--set config.cluster.auto_create_topics_enabled=true \
+--debug
 
