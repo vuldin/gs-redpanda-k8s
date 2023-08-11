@@ -14,33 +14,33 @@ done
 
 #Install Helm
 helm repo add redpanda https://charts.redpanda.com
-kubectl create namespace redpanda
+#kubectl create namespace redpanda
 
 #Setup PersistentVolumeClaim
-cat <<EOF | kubectl -n redpanda apply -f -
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: datadir-redpanda-0
-  annotations:
-    volumeType: local
-spec:
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: local-path
-  resources:
-    requests:
-      storage: 1Gi
-EOF
+#cat <<EOF | kubectl -n redpanda apply -f -
+#apiVersion: v1
+#kind: PersistentVolumeClaim
+#metadata:
+#  name: datadir-redpanda-0
+#  annotations:
+#    volumeType: local
+#spec:
+#  accessModes:
+#    - ReadWriteOnce
+#  storageClassName: local-path
+#  resources:
+#    requests:
+#      storage: 1Gi
+#EOF
 
 #Install redpanda
+#--set storage.persistentVolume.size=3Gi \
 helm install redpanda redpanda/redpanda -n redpanda  \
---set statefulset.replicas=1 \
---set auth.sasl.enabled=false \
+--set statefulset.replicas=3 \
 --set tls.enabled=false \
 --set resource.cpu.overprovisioned=true \
 --set resources.cpu.cores=300m \
---set storage.persistentVolume.size=3Gi \
+--set storage.persistentVolume.enabled=false \
 --set resources.memory.container.max=1025Mi \
 --set resources.memory.redpanda.reserveMemory=1Mi \
 --set "console.enabled=false" \
@@ -48,5 +48,6 @@ helm install redpanda redpanda/redpanda -n redpanda  \
 --set external.domain='' \
 --set external.addresses={'localhost'} \
 --set config.cluster.auto_create_topics_enabled=true \
---debug
 
+# install mailhog
+# helm install mailhog codecentric/mailhog
